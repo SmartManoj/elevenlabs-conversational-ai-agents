@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Mic, MicOff, MessageCircle, Bot, User, Download } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { downloadTranscript } from '@/utils/transcript'
-import { Conversation } from '@11labs/client'
+import { Conversation } from '@elevenlabs/client'
 import { getSignedUrl } from '@/app/actions/getSignedUrl'
 export default function VoiceAssistant() {
   const [conversation, setConversation] = useState(null)
