@@ -16,7 +16,9 @@ export async function getSignedUrl() {
     )
 
     if (!response.ok) {
-      throw new Error('Failed to get signed URL')
+      const errorBody = await response.text();
+      console.error('Failed to get signed URL:', response.status, errorBody);
+      throw new Error(`Failed to get signed URL: ${response.status} ${errorBody}`);
     }
 
     const data = await response.json()
