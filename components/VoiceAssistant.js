@@ -2,6 +2,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Mic, MicOff, MessageCircle, Bot, User, Download } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
@@ -9,6 +10,7 @@ import { downloadTranscript } from '@/utils/transcript'
 import { Conversation } from '@elevenlabs/client'
 import { getSignedUrl } from '@/app/actions/getSignedUrl'
 export default function VoiceAssistant() {
+  const searchParams = useSearchParams()
   const [conversation, setConversation] = useState(null)
   const [messages, setMessages] = useState([])
   const [isSpeaking, setIsSpeaking] = useState(false)
@@ -32,9 +34,15 @@ export default function VoiceAssistant() {
       if (!signedUrl) {
         throw new Error('Failed to get signed URL')
       }
+      const dynamicVariables = {}
+      for (const [key, value] of searchParams.entries()) {
+        dynamicVariables[key] = value
+      }
+
       const conv = await Conversation.startSession({
         // agentId: process.env.NEXT_PUBLIC_AGENT_ID,
         signedUrl,
+        dynamicVariables,
         onMessage: (message) => {
           console.log('message', message)
           setMessages((prev) => [
